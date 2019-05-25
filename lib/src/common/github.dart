@@ -352,11 +352,11 @@ class GitHub {
   @meta.alwaysThrows
   void handleStatusCode(http.Response response) {
     String message;
-    List<Map<String, String>> errors;
+    var errors;
     if (response.headers['content-type'].contains('application/json')) {
       var json = jsonDecode(response.body);
       message = json['message'];
-      errors = json['errors'] as List<Map<String, String>>;
+      errors = json['errors'];
     }
     switch (response.statusCode) {
       case 404:
@@ -378,7 +378,8 @@ class GitHub {
         buff.writeln("  Message: $message");
         if (errors != null) {
           buff.writeln("  Errors:");
-          for (Map<String, String> error in errors) {
+          for (var error in errors) {
+            print(error);
             var resource = error['resource'];
             var field = error['field'];
             var code = error['code'];
